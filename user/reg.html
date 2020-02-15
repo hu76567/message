@@ -31,7 +31,7 @@
       </div>
       <div class="form-group">
         <label for="uesravatar">头像</label>
-        <input type="file" class="form-control" id="password" placeholder="Password" />
+        <input type="file" class="form-control" id="useravatar" />
       </div>
       <div>
         <button class="btn" id="btn" type="button">注册</button>
@@ -40,38 +40,39 @@
     </div>
   </div>
   <script src="./jquery-1.8.1.js"></script>
-  <script src="./config.js"></script>
+  <!-- <script src="./config.js"></script> -->
   <script>
     $('#btn').click(function () {
       // 获取用户名和密码
       let name = $('#username').val().trim()
-      let password = $('#password').val().trim()
-
+      let pwd = $('#password').val().trim()
+      // 获取选中的文件   都保存在files属性中
+      let input = document.getElementById('useravatar')
+      // files[0] 用户选中的第一个文件
+      let avatar = input.files[0]
+      console.log(name, pwd, avatar)
       // 判断是否为空
       if (name === '' || password === '') {
         alert('不能为空')
         return
       }
       // 请求
+
+      // 构建一个空的fordata对象，追加三个参数
+      var fd = new FormData();
+      fd.append("name", name);
+      fd.append("pwd", pwd);
+      fd.append("avatar", avatar);
       $.ajax({
-        url: BASEURL + '/adduser',
+        url: 'http://localhost:8084/user_add',
         type: 'post',
-        data: {
-          name, password
-        },
-        crossDomain: true,
-        xhrFields: {
-          withCredentials: true
-        },
-        success(res) {
-          if (res.code === 200) {
-            alert('注册成功！')
-            location.href = "./login.html"
-          } else {
-            alert(res.msg)
-          }
-        }
+        data: fd,
+        contentType: false,
+        processData: false,
+      }).then(res => {
+        console.log(res)
       })
+
     });
   </script>
 </body>
