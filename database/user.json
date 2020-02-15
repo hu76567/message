@@ -3,6 +3,6 @@
         "id": 1,
         "name": "admin",
         "pwd": 123456,
-        "avatar": "XXXXX"
+        "avatarUrl": "XXXXX"
     }
 ]
