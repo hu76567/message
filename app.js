@@ -1,6 +1,9 @@
 // 引入模块
 const express = require('express')
 const multer = require('multer')
+
+// 引入封装好的模块
+const user = require('./untils/user')
 // 创建实例
 const app = express();
 // 托管静态资源
@@ -13,7 +16,15 @@ const upload = multer({ dest: 'avatars/' })
 app.post("/user_add", upload.single("avatar"), function (req, res) {
     console.log(req.file)
     console.log(req.body)
-    res.send("测试成功")
+
+    //    操作数据
+    let { name, pwd } = req.body;
+    let avatarUrl = req.file.path;
+    user.add(name, pwd, avatarUrl);
+    res.send({
+        code: 200,
+        msg: "用户注册成功"
+    })
 })
 
 app.listen(8084, function () {

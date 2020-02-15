@@ -29,9 +29,16 @@ const add = (name, pwd, avatarUrl) => {
         // id是数组最后一个元素id+1
         id,
         name,
+        pwd,
         avatarUrl,
     })
     // 写回数据
     fs.writeFileSync(FILE_PATH, JSON.stringify(arr))
     return arr;
+}
+
+// 导出模块
+module.exports = {
+    add,
+    get
 }
