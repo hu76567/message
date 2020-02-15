@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>留言板</title>
+  <link rel="stylesheet" href="./assets/bootstrap.css" />
+  <style>
+    #messages img {
+      width: 50px;
+    }
+
+    .main {
+      height: 450px;
+      padding: 20px;
+      overflow: auto;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="display-6">留言板</h1>
+    <hr />
+    <div class="main">
+      <ul id="messages" class="list-unstyled">
+        <!-- <li class="media">
+          <img class="mr-3" src="./assets/avatar.png" alt="张三" />
+          <div class="media-body">
+            <h4>张三</h4>
+            <p>寒雨连江夜入吴</p>
+            <p>2019-06-07</p>
+          </div>
+        </li>
+        <li class="media">
+          <img class="mr-3" src="./assets/avatar.png" alt="张三" />
+          <div class="media-body">
+            <h4>张三</h4>
+            <p>平明送客楚江孤</p>
+            <p>2019-06-07</p>
+          </div>
+        </li> -->
+      </ul>
+    </div>
+
+    <hr />
+    <div id="linkArea">
+      <a href="./login.html">请登陆</a>
+    </div>
+    <form id="formArea" style="display: block;">
+      <div class="form-group">
+        <label for="txt_name">称呼：</label>
+        <input type="text" id="txt_name" class="form-control">
+      </div>
+      <div class="form-group" style="display: flex">
+        <label for="txt_content" style="display:none">留言：</label>
+        <input type="text" id="txt_content" class="form-control">
+
+        <button id="btn_send" type="button" class="btn btn-primary">提交</button>
+      </div>
+    </form>
+  </div>
+  <script src="./jquery-1.8.1.js"></script>
+  <script>
+
+    function getAndShow() {
+      // 本地ip
+      $.get('http://192.168.1.111:8084/getmsg').then(res => {
+        console.log(res);
+        // 页面渲染
+        if (res.code !== 200) {
+          alert(res.msg)
+          return;
+        }
+        $("#messages").empty()
+
+        res.data.forEach(item => {
+          console.log(item);
+          var str = `
+          <li class="media">
+            <img class="mr-3" src="./assets/avatar.png" alt="张三" />
+            <div class="media-body">
+              <h4>${item.name}</h4>
+              <p>${item.content}</p>
+              <p>${item.dt}</p>
+            </div>
+          </li>
+          `
+          $("#messages").append(str)
+        })
+      })
+    }
+
+    getAndShow()
+
+
+
+    // 添加留言
+    $('#btn_send').click(() => {
+
+      // 1. 获取用户输入 
+      let name = $("#txt_name").val().trim()
+      let content = $("#txt_content").val().trim()
+      console.log(name, content);
+
+      // 2.ajax添加
+      $.post('http://192.168.1.111:8084/addmsg',
+        {
+          'name': name,
+          'content': content
+        }).then(res => {
+          console.log(res);
+          if (res.code == 200) {
+
+            // 添加成功，
+            // 1. 要重新获取留言数据，并显示
+            getAndShow();
+            // 2. 清空留言区域
+            $("#txt_name").val('')
+            $("#txt_content").val('')
+            $('.main').animate({ scrollTop: $('#messages').height() }, 500);
+          }
+        })
+      // //scrollTop($('#messages').height());
+    })
+  </script>
+</body>
+
+</html>
