@@ -77,6 +77,24 @@ app.post("/user_login", (req, res) => {
     }
 })
 
+// 获取用户信息,验证session
+app.get('/get_user', (req, res) => {
+    let isLogin = req.session.isLogin
+    let name = req.session.name
+    if (isLogin) {
+        res.send({
+            code: 200,
+            data: {
+                name,
+            }
+        })
+    } else {
+        res.send({
+            code: 400,
+            msg: '您还没有登录'
+        })
+    }
+})
 
 app.listen(8084, function () {
     console.log('服务器已启动...')
