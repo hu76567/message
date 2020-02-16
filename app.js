@@ -2,11 +2,25 @@
 const express = require('express')
 const multer = require('multer')
 const bodyParser = require('body-parser')
+// 创建实例
+const app = express();
+
+//1.引入session包
+const session = require('express-session');
+//2. 配置session
+let conf = {
+    secret: '123456', //加密字符串。 使用该字符串来加密session数据，自定义
+    resave: false, //强制保存session即使它并没有变化
+    saveUninitialized: false //强制将未初始化的session存储。当新建了一个session且未
+    //设定属性或值时，它就处于未初始化状态。
+};
+
+//3. 使用express-session
+app.use(session(conf));
 
 // 引入封装好的模块
 const user = require('./untils/user')
-// 创建实例
-const app = express();
+
 // 托管静态资源
 app.use(express.static('user'))
 // 引用body-parser
@@ -45,6 +59,11 @@ app.post("/user_login", (req, res) => {
     })
     console.log(curUser)
     if (curUser) {
+        // 通过session发放凭证
+        req.session.isLogin = true;
+        req.session.name = name;
+
+        // 随后会给浏览器设置cookie,
         res.send({
             code: 200,
             msg: "登陆成功",
