@@ -53,7 +53,7 @@ app.post("/user_login", (req, res) => {
     } else {
         res.send({
             code: 400,
-            msg: "登陆失败",
+            msg: "用户名或密码错误,请重新输入",
         })
     }
 })

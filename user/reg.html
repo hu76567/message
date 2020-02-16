@@ -70,7 +70,10 @@
         contentType: false,
         processData: false,
       }).then(res => {
-        console.log(res)
+        if (res.code === 200) {
+          alert(res.msg)
+          window.location.href = 'login.html'
+        }
       })
 
     });
