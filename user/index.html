@@ -57,6 +57,7 @@
       <div class="form-group">
         <label for="txt_name">称呼：</label>
         <label id="txt_name">***</label>
+        <button type="button" id="btn_quit">quit</button>
       </div>
       <div class="form-group" style="display: flex">
         <label for="txt_content" style="display:none">留言：</label>
@@ -81,6 +82,15 @@
       }
     })
 
+
+    // 退出登录
+    $("#btn_quit").click(() => {
+      $.get("http://localhost:8084/get_user").then((res) => {
+        if (res.code === 200) {
+          window.location.href = "./login.html"
+        }
+      })
+    })
 
 
     function getAndShow() {
@@ -111,8 +121,8 @@
       })
     }
 
-    getAndShow()
 
+    getAndShow()
 
 
     // 添加留言

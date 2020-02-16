@@ -96,6 +96,13 @@ app.get('/get_user', (req, res) => {
     }
 })
 
+app.get('/quit', (req, res) => {
+    req.session.destroy();
+    res.send({
+        code: 200,
+        msg: "quit"
+    })
+})
 app.listen(8084, function () {
     console.log('服务器已启动...')
 })
