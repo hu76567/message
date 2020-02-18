@@ -93,36 +93,36 @@
     })
 
 
-    function getAndShow() {
-      // 本地ip
-      $.get('http://localhost:8084/getmsg').then(res => {
-        console.log(res);
-        // 页面渲染
-        if (res.code !== 200) {
-          alert(res.msg)
-          return;
-        }
-        $("#messages").empty()
+    // function getAndShow() {
+    //   // 本地ip
+    //   $.get('http://localhost:8084/getmsg').then(res => {
+    //     console.log(res);
+    //     // 页面渲染
+    //     if (res.code !== 200) {
+    //       alert(res.msg)
+    //       return;
+    //     }
+    //     $("#messages").empty()
 
-        res.data.forEach(item => {
-          console.log(item);
-          var str = `
-          <li class="media">
-            <img class="mr-3" src="./assets/avatar.png" alt="张三" />
-            <div class="media-body">
-              <h4>${item.name}</h4>
-              <p>${item.content}</p>
-              <p>${item.dt}</p>
-            </div>
-          </li>
-          `
-          $("#messages").append(str)
-        })
-      })
-    }
+    //     res.data.forEach(item => {
+    //       console.log(item);
+    //       var str = `
+    //       <li class="media">
+    //         <img class="mr-3" src="./assets/avatar.png" alt="张三" />
+    //         <div class="media-body">
+    //           <h4>${item.name}</h4>
+    //           <p>${item.content}</p>
+    //           <p>${item.dt}</p>
+    //         </div>
+    //       </li>
+    //       `
+    //       $("#messages").append(str)
+    //     })
+    //   })
+    // }
 
 
-    getAndShow()
+    // getAndShow()
 
 
     // 添加留言
